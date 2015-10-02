@@ -14,10 +14,10 @@ class TokyoSport:
         return Client.request_months()
 
     def get_days(self):
-        return list(Day)
+        return [d.name for d in Day]
 
     def get_sports(self):
-        return list(Sport)
+        return [s.name for s in Sport]
 
     def get_parks(self):
         parks = []
