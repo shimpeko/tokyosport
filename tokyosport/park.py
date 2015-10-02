@@ -1,33 +1,39 @@
+from sport import Sport
+
 class Park:
 
-    def __init__(self, play, name, number):
-        self.__play = play
+    def __init__(self, id, name, baseball, baseball_mini, tennis_hard\
+                 , tennis_omni, soccer, soccer_mini):
+        self.__id = id
         self.__name = name
-        self.__number = number
+        self.__field_counts = {Sport.baseball: baseball
+                               , Sport.baseball_mini: baseball_mini
+                               , Sport.tennis_hard: tennis_hard
+                               , Sport.tennis_omni: tennis_omni
+                               , Sport.soccer: soccer_mini
+                               , Sport.soccer_mini: soccer_mini}
 
     @property
-    def play(self):
-        return self.__play
+    def id(self):
+        return self.__id
 
     @property
     def name(self):
         return self.__name
 
     @property
-    def number(self):
-        return self.__number
+    def field_counts(self):
+        return self.__field_counts
 
-    @property
-    def availability(month, days=(5,6,7)):
+    def get_slots(month, days=(5,6,7)):
         pass
 
     def __str__(self):
         return self.name
 
 if __name__ == '__main__':
-    from play import Play
-    p = Park(Play(Play.TENNIS_OMNI), 1, 'kouen')
-    print(p.play)
+    p = Park(1,'kouen',1,2,3,4,5,6)
+    print(p.id)
     print(p.name)
-    print(p.number)
+    print(p.field_counts)
 
