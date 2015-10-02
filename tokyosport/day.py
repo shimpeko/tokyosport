@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Days(Enum):
+class Day(Enum):
     Monday = 0
     Tuesday = 1
     Wednesday = 2
@@ -11,5 +11,5 @@ class Days(Enum):
     Holiday = 7
 
 if __name__ == '__main__':
-    for d in Days:
+    for d in Day:
         print(d)
