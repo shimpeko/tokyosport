@@ -2,9 +2,13 @@ import requests
 import unicodedata
 import re
 import json
+import configparser
 from tablestripper import TableStripper
 
-r = requests.get('https://yoyaku.sports.metro.tokyo.jp/web/html/kouenichiran110201.htm')
+config = configparser.ConfigParser()
+config.read('park_list_url.ini')
+
+r = requests.get(config['default']['url'])
 
 ts = TableStripper()
 ts.feed(r.content.decode('shift_jis'))
