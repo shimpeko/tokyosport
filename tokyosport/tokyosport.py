@@ -4,12 +4,12 @@ from sport import Sport
 from park_mapper import ParkMapper
 from park import Park
 from slot import Slot
+from slot import SlotMapper
 
 class TokyoSport:
 
     def __init__(self):
         self.__client = Client()
-        self.__ParkMapper = ParkMapper(self.__client)
 
     def get_months(self):
         return self.__client.request_months()
@@ -21,9 +21,8 @@ class TokyoSport:
         return [s.name for s in Sport]
 
     def get_parks(self, sport):
-        return ParkMapper(self.__client).find_by_sport(Sport[sport])
+        return ParkMapper(self.__client).retrieve(Sport[sport])
             
-
     def get_slots(self, sport, month, days, parks):
         pass
 
