@@ -6,7 +6,7 @@ class ParkMapper:
     def __init__(self, client):
         self.__client = client
 
-    def find_by_sport(self, sport):
+    def retrieve(self, sport):
         response, content = self.__client.request_parks(sport)
         n = 1
         parks = []
