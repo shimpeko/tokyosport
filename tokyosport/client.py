@@ -15,25 +15,13 @@ class Client:
         self.__session = None
         self.__last_requested_sport = None
 
-    def request_slots(self, sports, yearmonth, days, park):
-        if self.__last_requested_play.code != play.code:
-            return False
-        request_body = RequestBody(play, yearmonth, days, park).content
-        response, content = self.__session.request(Request(self.__SLOT_ACTION
-                                                           , request_body))
-        self.__request_back()
-        return response, content
 
     def __get_valid_session(self, sport=None):
         if self.__has_valid_session() is True \
            and sport == self.__last_requested_sport:
             return self.__session
-        session = Session()
-        self.request_months(session)
-        request_body = RequestBody().content
-        session.request(Request(self.__PLAY_ACTION, request_body))
-        self.__session = session
-        self.__last_reqested_sport = sport
+        self.request_sports()
+        self.__last_requested_sport = sport
         return self.__session
     
     def __has_valid_session(self):
@@ -43,19 +31,29 @@ class Client:
             return False
         return True
 
+    def request_sports(self):
+        self.__session = Session()
+        self.request_months(self.__session)
+        request_body = RequestBody().content
+        return self.__session.request(Request(self.__PLAY_ACTION, request_body))
+
     def request_parks(self, sport):
         rb = RequestBody(sport).content
-        return self.__get_valid_session(sport).request(\
+        return self.__get_valid_session(sport).request(
                Request(self.__PARK_ACTION, rb))
+
+    def request_slots(self, sport, yearmonth, days, park):
+        request_body = RequestBody(sport, yearmonth, days, park).content
+        response, content = self.__get_valid_session(sport).request(
+                            Request(self.__SLOT_ACTION, request_body))
+        self.__request_back()
+        return response, content
 
 	
     
     def request(self, play=None, yearmonth=None, days=None, park=None):
         if yearmonth == None:
             yearmonth = self.current_yearmonth()
-        if play is not None and park is not None and self.__has_valid_session():
-            if self.__last_requested_play.code == play.code:
-                return self.__request_slots(play, yearmonth, days, park)
         session = Session()
         self.request_months(session)
         request_body = RequestBody().content
@@ -70,7 +68,7 @@ class Client:
             return response, content
         self.__session = session
         self.__last_requested_play = play
-        return self.__request_slots(play, yearmonth, days, park)
+        return self.request_slots(play, yearmonth, days, park)
                                                   
     def __request_back(self):
         self.__session.request(Request(self.__BACK_ACTION

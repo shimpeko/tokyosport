@@ -40,7 +40,7 @@ class RequestBody:
                  , days=None
                  , parks=None):
         self.__sport = sport
-        self.__days = () if days is None else days
+        self.__days = () if days is None else [d.value for d in days]
         self.__parks = parks
         # set current year and month to yearmonth if None
         if yearmonth is None:
@@ -91,9 +91,10 @@ class RequestBody:
         if self.__parks != None:
             parks = []
             for park in self.__parks:
-                parks.append(park.number)
+                parks.append(park.seq)
             p['bldBtnStat'] = self.__create_bit_flag_list(
                                    len(p['bldBtnStat']), parks)
+            p['selectBldCdsNum'] = len(parks)
         return p
 
     def __dict_to_str(self, params, kv_delimiter, item_delimiter):

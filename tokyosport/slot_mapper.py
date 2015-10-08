@@ -11,21 +11,20 @@ class SlotMapper:
     _slot_po = re.compile("width=\"70px\"\s+height=\"39\"")
     _open_po = re.compile("^\s+<b>(\d)</b>$")
 
-    @staticmethod
-    def find_by_park(yearmonth, days, park, client=Client()):
-        return SlotMapper.find_by_parks(yearmonth, days, [park], client)
+    def __init__(self, client):
+        self.__client = client
 
-    @staticmethod
-    def find_by_parks(yearmonth, days, parks, client=Client()):
+    def retrieve(self, yearmonth, days, parks):
         park_idxs = [i for i in range(len(parks))]
         slots = []
         # retrive slot by 2 parks
         for even_park_idx in park_idxs[0::2]:
             request_parks = parks[even_park_idx:even_park_idx + 2]
-            response, content = client.request(parks[0].play
-                                               , yearmonth
-                                               , days
-                                               , request_parks)
+            response, content = self.__client.request(
+                                                      parks[0].sport
+                                                      , yearmonth
+                                                      , days
+                                                      , request_parks)
             dates = []
             time_idx = 0
             slot_idx = 0
