@@ -67,7 +67,7 @@ class Client:
             if po.search(line) != None:
                 lines.append(line)
         months = []
-        for month in range(0,12):
+        for month in range(1,12):
             for line in lines:
                 if re.search(str(month)+"月", line) != None:
                     months.append(month)
