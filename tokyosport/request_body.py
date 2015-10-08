@@ -35,11 +35,11 @@ class RequestBody:
                                      "82%AD%82%BE%82%B3%82%A2%81B")])
 
     def __init__(self
-                 , play=None
+                 , sport=None
                  , yearmonth=None
                  , days=None
                  , parks=None):
-        self.__play = play
+        self.__sport = sport
         self.__days = () if days is None else days
         self.__parks = parks
         # set current year and month to yearmonth if None
@@ -51,7 +51,7 @@ class RequestBody:
                 yearmonth = today
         self.__yearmonth = yearmonth.replace(day=1)
         self.__displayNo = "prwbb7000"
-        if play is not None and self.__parks is None:
+        if sport is not None and self.__parks is None:
             self.__displayNo = "prwbb6000"
         search_params = self.__build_serach_params()
         self.__request_body =  self.__dict_to_str(search_params, "=", "&")
@@ -86,8 +86,8 @@ class RequestBody:
         p['dispYMD'] = date
         p['selectM'] = self.__yearmonth.month
         p['selectYMD'] = date
-        if self.__play != None:
-            p['selectPpsCd'] = self.__play.code
+        if self.__sport != None:
+            p['selectPpsCd'] = self.__sport.value
         if self.__parks != None:
             parks = []
             for park in self.__parks:
@@ -117,15 +117,14 @@ class RequestBody:
         return self.__request_body
 
 if __name__ == '__main__':
-    from play import Play
+    from sport import Sport
     from park import Park
     from service import Service
     m = Service.get_months()[0]
     rb = RequestBody(yearmonth=None, days=(5,6,7))
     print(rb.content)
-    play = Play(2021)
-    rb = RequestBody(yearmonth=None, days=(5,6,7), play=play )
+    rb = RequestBody(yearmonth=None, days=(5,6,7), sport=Sport.tennis_omni )
     print(rb.content)
-    park = Park(play, 1, '公園')
+    park = Park(Sport.tennis_omni, 1, '公園')
     rb = RequestBody(yearmonth=None, days=(5,6,7), play=play, parks=[park])
     print(rb)

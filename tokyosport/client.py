@@ -13,7 +13,42 @@ class Client:
 
     def __init__(self):
         self.__session = None
-        self.__last_requested_play = None
+        self.__last_requested_sport = None
+
+    def request_slots(self, sports, yearmonth, days, park):
+        if self.__last_requested_play.code != play.code:
+            return False
+        request_body = RequestBody(play, yearmonth, days, park).content
+        response, content = self.__session.request(Request(self.__SLOT_ACTION
+                                                           , request_body))
+        self.__request_back()
+        return response, content
+
+    def __get_valid_session(self, sport=None):
+        if self.__has_valid_session() is True \
+           and sport == self.__last_requested_sport:
+            return self.__session
+        session = Session()
+        self.request_months(session)
+        request_body = RequestBody().content
+        session.request(Request(self.__PLAY_ACTION, request_body))
+        self.__session = session
+        self.__last_reqested_sport = sport
+        return self.__session
+    
+    def __has_valid_session(self):
+        if self.__session is None:
+            return False
+        if (datetime.datetime.today() - self.__session.last_use).seconds > 60:
+            return False
+        return True
+
+    def request_parks(self, sport):
+        rb = RequestBody(sport).content
+        return self.__get_valid_session(sport).request(\
+               Request(self.__PARK_ACTION, rb))
+
+	
     
     def request(self, play=None, yearmonth=None, days=None, park=None):
         if yearmonth == None:
@@ -37,24 +72,9 @@ class Client:
         self.__last_requested_play = play
         return self.__request_slots(play, yearmonth, days, park)
                                                   
-    def __request_slots(self, play, yearmonth, days, park):
-        request_body = RequestBody(play, yearmonth, days, park).content
-        response, content = self.__session.request(Request(self.__SLOT_ACTION
-                                                           , request_body))
-        self.__request_back()
-        return response, content
-
     def __request_back(self):
         self.__session.request(Request(self.__BACK_ACTION
                                        , {'displayNo': "prwca1000"}))
-
-    def __has_valid_session(self):
-        if self.__session is None:
-            return False
-        if (datetime.datetime.today() - self.__session.last_use).seconds > 60:
-            return False
-        return True
-
     @staticmethod
     def request_months(session=None):
         if session == None:
