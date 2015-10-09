@@ -5,14 +5,14 @@ class ParkMapper:
 
     def __init__(self, client):
         self.__client = client
+        self.__po = re.compile("(公園|森|地)(Ａ|Ｂ|Ｃ|\s|$)")
 
     def retrieve(self, sport):
         response, content = self.__client.request_parks(sport)
         n = 1
         parks = []
-        po = re.compile("(公園|森|地)(Ａ|Ｂ|Ｃ|\s|$)")
         for line in content.decode('shift_jis').splitlines():
-            if po.search(line) != None:
+            if self.__po.search(line) != None:
                 parks.append(Park(sport, n, line.strip()))
                 n = n + 1
         return parks

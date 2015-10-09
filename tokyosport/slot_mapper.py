@@ -6,13 +6,12 @@ from slot import Slot
 
 class SlotMapper:
 
-    _day_po = re.compile("(\d{2})/(\d{1,2})\((.+?)\)")
-    _time_po = re.compile("^\s{2,}(\d{2}):(\d{1,2})")
-    _slot_po = re.compile("width=\"70px\"\s+height=\"39\"")
-    _open_po = re.compile("^\s+<b>(\d)</b>$")
-
     def __init__(self, client):
         self.__client = client
+        self.__day_po = re.compile("(\d{2})/(\d{1,2})\((.+?)\)")
+        self.__time_po = re.compile("^\s{2,}(\d{2}):(\d{1,2})")
+        self.__slot_po = re.compile("width=\"70px\"\s+height=\"39\"")
+        self.__open_po = re.compile("^\s+<b>(\d)</b>$")
 
     def retrieve(self, yearmonth, days, parks):
         park_idxs = [i for i in range(len(parks))]
@@ -30,10 +29,10 @@ class SlotMapper:
             slot_idx = 0
             request_park_idx = -1
             for line in content.decode('shift_jis').splitlines():
-                day_ro = SlotMapper._day_po.search(line)
-                time_ro = SlotMapper._time_po.match(line)
-                slot_ro = SlotMapper._slot_po.search(line)
-                open_ro = SlotMapper._open_po.match(line)
+                day_ro = self.__day_po.search(line)
+                time_ro = self.__time_po.match(line)
+                slot_ro = self.__slot_po.search(line)
+                open_ro = self.__open_po.match(line)
                 if day_ro != None:
                     ym = copy.copy(yearmonth)
                     date = ym.replace(day=int(day_ro.group(2)))
