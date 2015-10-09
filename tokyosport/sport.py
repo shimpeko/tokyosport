@@ -1,5 +1,3 @@
-from enum import Enum
-
 class Sport:
 
     baseball = 1011
@@ -9,9 +7,10 @@ class Sport:
     soccer = 3031
     soccer_mini = 3032
 
-    def __init__(self, id, name):
+    def __init__(self, id, name, park_mapper):
         self.__id = id
         self.__name = name
+        self.__park_mapper = park_mapper
 
     @property
     def id(self):
@@ -20,3 +19,13 @@ class Sport:
     @property
     def name(self):
         return self.__name
+
+    def get_parks(self):
+        return self.__park_mapper.retrieve(self)
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if self.id != other.id:
+            return False
+        return True

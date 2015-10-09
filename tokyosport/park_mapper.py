@@ -1,4 +1,5 @@
 from park import Park
+from slot_mapper import SlotMapper
 import re
 
 class ParkMapper:
@@ -13,7 +14,8 @@ class ParkMapper:
         parks = []
         for line in content.decode('shift_jis').splitlines():
             if self.__po.search(line) != None:
-                parks.append(Park(sport, n, line.strip()))
+                parks.append(Park(sport, n, line.strip()
+                             , SlotMapper(self.__client)))
                 n = n + 1
         return parks
 

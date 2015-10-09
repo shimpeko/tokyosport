@@ -13,7 +13,8 @@ class SlotMapper:
         self.__slot_po = re.compile("width=\"70px\"\s+height=\"39\"")
         self.__open_po = re.compile("^\s+<b>(\d)</b>$")
 
-    def retrieve(self, yearmonth, days, parks):
+    def retrieve(self, month, days, parks):
+        yearmonth = datetime.date.today().replace(month=month)
         park_idxs = [i for i in range(len(parks))]
         slots = []
         # retrive slot by 2 parks

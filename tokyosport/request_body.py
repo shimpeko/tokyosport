@@ -87,7 +87,7 @@ class RequestBody:
         p['selectM'] = self.__yearmonth.month
         p['selectYMD'] = date
         if self.__sport != None:
-            p['selectPpsCd'] = self.__sport.value
+            p['selectPpsCd'] = self.__sport.id
         if self.__parks != None:
             parks = []
             for park in self.__parks:

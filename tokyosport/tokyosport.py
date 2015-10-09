@@ -22,13 +22,15 @@ class TokyoSport:
     def get_sports(self):
         return SportMapper(self.__client).retrieve()
 
-    def get_parks(self, sport):
-        return ParkMapper(self.__client).retrieve(Sport[sport])
+    def get_park(self, sport_id, sport_name):
+        return Sport(sport_id, sport_name, ParkMapper(self.__client))\
+               .get_parks()
             
     def get_slots(self, month, days, parks):
-        yearmonth = datetime.date.today().replace(month=month)
-        days = [Day[d] for d in days]
-        return SlotMapper(self.__client).retrieve(yearmonth, days, parks)
+        slots = []
+        for park in parks:
+            slots.extend(park.get_slots(month, days))
+        return slots
 
     def get_available_slots(self, sport, month, days, parks):
         pass
@@ -39,5 +41,8 @@ if __name__ == '__main__':
     sports = ts.get_sports()
     for s in sports:
         print(s.name)
-
+        for p in s.get_parks():
+            print(p.name)
+            for slot in p.get_slots(months[0], ['Sunday']):
+                print(slot.start)
 

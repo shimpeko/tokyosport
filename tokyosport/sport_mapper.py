@@ -1,4 +1,5 @@
 from sport import Sport
+from park_mapper import ParkMapper
 import re
 
 class SportMapper:
@@ -14,7 +15,8 @@ class SportMapper:
         sports = []
         for line in link_lines:
             ro = self.__po.match(line)
-            sports.append(Sport(ro.group(1), ro.group(2)))
+            sports.append(Sport(ro.group(1), ro.group(2)
+                                , ParkMapper(self.__client)))
         return sports
 
 if __name__ == '__main__':
