@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Sport(Enum):
+class Sport:
 
     baseball = 1011
     baseball_mini = 1012
@@ -9,7 +9,14 @@ class Sport(Enum):
     soccer = 3031
     soccer_mini = 3032
 
-if __name__ == '__main__':
-    for s in Sport:
-        print(s)
+    def __init__(self, id, name):
+        self.__id = id
+        self.__name = name
 
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def name(self):
+        return self.__name

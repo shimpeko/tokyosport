@@ -18,7 +18,8 @@ class Client:
 
     def __get_valid_session(self, sport=None):
         if self.__has_valid_session() is True \
-           and sport == self.__last_requested_sport:
+           and (self.__last_requested_sport == sport \
+                or self.__last_requested_sport is None):
             return self.__session
         self.request_sports()
         self.__last_requested_sport = sport
