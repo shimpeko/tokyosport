@@ -1,8 +1,9 @@
 from client import Client
 from day import Day
 from sport import Sport
-from park_mapper import ParkMapper
+from sport_mapper import SportMapper
 from park import Park
+from park_mapper import ParkMapper
 from slot import Slot
 from slot_mapper import SlotMapper
 import datetime
@@ -19,7 +20,7 @@ class TokyoSport:
         return [d.name for d in Day]
 
     def get_sports(self):
-        return [s.name for s in Sport]
+        return SportMapper(self.__client).retrieve()
 
     def get_parks(self, sport):
         return ParkMapper(self.__client).retrieve(Sport[sport])
@@ -35,13 +36,8 @@ class TokyoSport:
 if __name__ == '__main__':
     ts = TokyoSport()
     months = ts.get_months()
-    print(months)
-    print(ts.get_days())
-    print(ts.get_sports())
-    parks = ts.get_parks('tennis_omni')
-    for p in parks:
-        print(p.name)
-    for s in ts.get_slots(months[0], ['Saturday', 'Sunday'], parks):
-        print(s.start)
+    sports = ts.get_sports()
+    for s in sports:
+        print(s.name)
 
 

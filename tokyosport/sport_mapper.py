@@ -7,7 +7,7 @@ class SportMapper:
         self.__client = client
         self.__po = re.compile('^.*\'(\d{4})\'\).*alt="(.*?)">$')
 
-    def find(self):
+    def retrieve(self):
         r, c = self.__client.request_sports()
         link_lines = (l for l in c.decode('shift_jis').splitlines() if \
                       l.strip().startswith('<a href="javaScript:sendPpsCd'))
